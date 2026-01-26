@@ -126,5 +126,96 @@
       © 2026 Deepak Kumar Boddu. Built as a fresher portfolio.
     </div>
   </footer>
+  <!-- Scroll To Top Button -->
+<button id="scrollTopBtn"
+  class="hidden fixed bottom-6 right-6 p-3 rounded-full bg-indigo-600 hover:bg-indigo-500 shadow-lg">
+  ⬆️
+</button>
+
+<script>
+  // ===== Smooth scroll =====
+  document.querySelectorAll('a[href^=\"#\"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute('href'))
+        .scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // ===== Scroll to top button =====
+  const scrollBtn = document.getElementById(\"scrollTopBtn\");
+  window.addEventListener(\"scroll\", () => {
+    if (window.scrollY > 300) {
+      scrollBtn.classList.remove(\"hidden\");
+    } else {
+      scrollBtn.classList.add(\"hidden\");
+    }
+  });
+  scrollBtn.onclick = () => window.scrollTo({ top: 0, behavior: \"smooth\" });
+
+  // ===== Typing effect =====
+  const text = \"A CS Graduate | Java | Web | Data Analytics\";
+  let index = 0;
+  const typingEl = document.createElement(\"p\");
+  typingEl.className = \"mt-4 text-indigo-400 font-medium\";
+  document.querySelector(\"h2\").after(typingEl);
+
+  function typeEffect() {
+    if (index < text.length) {
+      typingEl.textContent += text.charAt(index);
+      index++;
+      setTimeout(typeEffect, 70);
+    }
+  }
+  typeEffect();
+
+  // ===== Project filtering =====
+  const projects = document.querySelectorAll(\"#projects .glow-card\");
+
+  const filterBar = document.createElement(\"div\");
+  filterBar.className = \"mb-6 flex gap-4\";
+  filterBar.innerHTML = `
+    <button class=\"filterBtn btn-primary\" data-type=\"all\">All</button>
+    <button class=\"filterBtn px-4 py-2 border rounded-lg\" data-type=\"web\">Web</button>
+    <button class=\"filterBtn px-4 py-2 border rounded-lg\" data-type=\"data\">Data</button>
+    <button class=\"filterBtn px-4 py-2 border rounded-lg\" data-type=\"ml\">ML</button>
+  `;
+  document.querySelector(\"#projects h3\").after(filterBar);
+
+  const tags = [\"ml\", \"web\", \"data\"]; // assign types manually in order
+
+  projects.forEach((p, i) => p.dataset.type = tags[i] || \"web\");
+
+  document.querySelectorAll(\".filterBtn\").forEach(btn => {
+    btn.onclick = () => {
+      const type = btn.dataset.type;
+      projects.forEach(p => {
+        if (type === \"all\" || p.dataset.type === type) {
+          p.style.display = \"block\";
+        } else {
+          p.style.display = \"none\";
+        }
+      });
+    };
+  });
+
+  // ===== Simple reveal animation =====
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.transform = \"translateY(0)\";
+        entry.target.style.opacity = \"1\";
+      }
+    });
+  });
+
+  document.querySelectorAll(\"section\").forEach(sec => {
+    sec.style.transform = \"translateY(30px)\";
+    sec.style.opacity = \"0\";
+    sec.style.transition = \"0.6s ease\";
+    observer.observe(sec);
+  });
+</script>
+
 </body>
 </html>
